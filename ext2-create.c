@@ -209,7 +209,7 @@ void write_superblock(int fd) {
 	superblock.s_log_frag_size = BLOCK_SIZE;						/* 1024 */
 	superblock.s_blocks_per_group = 8192;
 	superblock.s_frags_per_group = 8192;
-	superblock.s_inodes_per_group = (NUM_INODES + superblock.s_blocks_per_group - 1 )/superblock.s_blocks_per_group; 
+	superblock.s_inodes_per_group = BLOCK_SIZE;	/* 1024 */
 	superblock.s_mtime = 0;				/* Mount time */
 	superblock.s_wtime = current_time;	/* Write time */
 	superblock.s_mnt_count         = 0; /* Number of times mounted so far */
