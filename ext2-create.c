@@ -20,6 +20,7 @@ typedef int32_t i32;
 #define NUM_BLOCKS 1024
 #define NUM_INODES 128
 
+
 #define LOST_AND_FOUND_INO 11
 #define HELLO_WORLD_INO    12
 #define HELLO_INO          13
@@ -261,12 +262,12 @@ void write_block_group_descriptor_table(int fd) {
 
 	// TODO It's all yours
 	// TODO finish the block group descriptor number setting
-	block_group_descriptor.bg_block_bitmap = -1;
-	block_group_descriptor.bg_inode_bitmap = -1;
-	block_group_descriptor.bg_inode_table = -1;
-	block_group_descriptor.bg_free_blocks_count = -1;
-	block_group_descriptor.bg_free_inodes_count = -1;
-	block_group_descriptor.bg_used_dirs_count = -1;
+	block_group_descriptor.bg_block_bitmap = BLOCK_BITMAP_BLOCKNO;
+	block_group_descriptor.bg_inode_bitmap = INODE_BITMAP_BLOCKNO;
+	block_group_descriptor.bg_inode_table = INODE_TABLE_BLOCKNO;
+	block_group_descriptor.bg_free_blocks_count = NUM_FREE_BLOCKS;
+	block_group_descriptor.bg_free_inodes_count = NUM_FREE_INODES;
+	block_group_descriptor.bg_used_dirs_count = 0;
 
 	ssize_t size = sizeof(block_group_descriptor);
 	if (write(fd, &block_group_descriptor, size) != size) {
