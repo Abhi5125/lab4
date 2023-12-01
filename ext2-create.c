@@ -411,7 +411,7 @@ void write_inode_table(int fd) {
 	hello_inode.i_links_count = 1;
 	hello_inode.i_blocks = 2;
 	hello_inode.i_block[0] = HELLO_WORLD_FILE_BLOCKNO;
-	wrie_inode(fd, hello_inode, &hello_inode);
+	write_inode(fd, hello_inode, &hello_inode);
 }
 
 void write_root_dir_block(int fd)
