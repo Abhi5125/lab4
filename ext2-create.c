@@ -291,10 +291,20 @@ void write_block_bitmap(int fd)
 	// TODO It's all yours
 	u8 map_value[BLOCK_SIZE] = {0};
 	
-	for (int i = 0; i < BLOCK_SIZE; i++) {
-
+	for (int i = 0; i < LAST_BLOCK; i+= 8) {
+		map_value[i / 8] = -1;
 	}
-
+	if (LAST_BLOCK % 8 != 0) {// we have a remainder
+			int remainder = LAST_BLOCK % 8;
+			u8 mask = -1;
+			mask >>= (8 - remainder);
+			map_value[LAST_BLOCK / 8] = mask;
+	}
+	map_value[ NUM_BLOCKS / 8 - 1] = 1 << 7;
+	for (int i = NUM_BLOCKS / 8; i < BLOCK_SIZE; ++i) {
+		map_value[i] = -1;
+	}
+ 
 
 	if (write(fd, map_value, BLOCK_SIZE) != BLOCK_SIZE)
 	{
