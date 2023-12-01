@@ -410,7 +410,7 @@ void write_inode_table(int fd) {
 	hello_inode.i_dtime = 0;
 	hello_inode.i_links_count = 1;
 	hello_inode.i_blocks = 2;
-	hello_inode.i_block[0] = INODE_TABLE_BLOCKNO;
+	hello_inode.i_block[0] = EXT2_IND_BLOCK;
 	write_inode(fd, HELLO_INO, &hello_inode);
 
 	struct ext2_inode root_inode = { 0};
