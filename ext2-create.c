@@ -323,6 +323,22 @@ void write_inode_bitmap(int fd)
 	// TODO It's all yours
 	u8 map_value[BLOCK_SIZE];
 
+	for (int i = 0; i < LAST_INO; i+= 8) {
+		map_value[i / 8] = -1;
+	}
+	if (LAST_INO % 8 != 0) {// we have a remainder
+			int remainder = LAST_INO % 8;
+			u8 mask = -1;
+			mask >>= (8 - remainder);
+			map_value[LAST_INO / 8] = mask;
+	}
+
+	for (int i = NUM_INODES / 8; i < BLOCK_SIZE; ++i) {
+		map_value[i] = -1;
+	}
+
+
+
 	if (write(fd, map_value, BLOCK_SIZE) != BLOCK_SIZE)
 	{
 		errno_exit("write");
