@@ -446,15 +446,22 @@ void write_root_dir_block(int fd)
 
 	bytes_remaining -= current_entry.rec_len;
 
+	struct ext2_dir_entry parent_entry = {0};
+	dir_entry_set(parent_entry, EXT2_ROOT_INO, "..");
+	dir_entry_write(parent_entry, fd);
+
+	bytes_remaining -= parent_entry.rec_len;
+
 	struct ext2_dir_entry child_entry = {0};
 	dir_entry_set(child_entry, LOST_AND_FOUND_INO, "lost+found");
 	dir_entry_write(child_entry, fd);
 
-	bytes_remaining -= child_entry.rec_len;
-
-	struct ext2_dir_entry fill_entry = {0};
+    bytes_remaining -= child_entry.rec_len;
+	if (bytes_remaining > 0) {
+ 	struct ext2_dir_entry fill_entry = {0};
 	fill_entry.rec_len = bytes_remaining;
 	dir_entry_write(fill_entry, fd);
+	}
 }
 
 void write_lost_and_found_dir_block(int fd) {
