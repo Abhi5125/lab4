@@ -457,6 +457,14 @@ void write_root_dir_block(int fd)
 	dir_entry_write(child_entry, fd);
 
     bytes_remaining -= child_entry.rec_len;
+
+	struct ext2_dir_entry child_entry2 = {0};
+	dir_entry_set(child_entry2, HELLO_WORLD_INO, "hello-world");
+	dir_entry_write(child_entry2, fd);
+
+	bytes_remaining -= child_entry2.rec_len;
+
+
 	if (bytes_remaining > 0) {
  	struct ext2_dir_entry fill_entry = {0};
 	fill_entry.rec_len = bytes_remaining;
