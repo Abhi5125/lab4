@@ -409,7 +409,7 @@ void write_inode_table(int fd) {
 	hello_inode.i_mtime = current_time;
 	hello_inode.i_dtime = 0;
 	hello_inode.i_links_count = 1;
-	hello_inode.i_block[0] = "hello-world";
+	memcpy(hello_inode.i_block[0], "hello-world", hello_inode.i_size);
 	hello_inode.i_blocks = 2;
 	write_inode(fd, HELLO_INO, &hello_inode);
 
