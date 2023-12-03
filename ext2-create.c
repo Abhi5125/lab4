@@ -534,9 +534,14 @@ void write_hello_world_file_block(int fd)
 	bytes_remaining -= str_size;
 	
 
-	struct ext2_dir_entry fill_entry = {0};
-	fill_entry.rec_len = bytes_remaining;
-	dir_entry_write(fill_entry, fd);
+	char fill[BLOCK_SIZE] = {0};
+    if (write(fd, fill, bytes_remaining) != bytes_remaining) {
+        errno_exit("write");
+    }
+
+	// struct ext2_dir_entry fill_entry = {0};
+	// fill_entry.rec_len = bytes_remaining;
+	// dir_entry_write(fill_entry, fd);
 }
 
 int main(int argc, char *argv[]) {
