@@ -525,6 +525,15 @@ void write_hello_world_file_block(int fd)
 
 	bytes_remaining -= parent_entry.rec_len;
 
+	
+   const char *hello_world_str = "Hello world\n";
+    ssize_t str_size = strlen(hello_world_str);
+    if (write(fd, hello_world_str, str_size) != str_size) {
+        errno_exit("write");
+    }
+	bytes_remaining -= str_size;
+	
+
 	struct ext2_dir_entry fill_entry = {0};
 	fill_entry.rec_len = bytes_remaining;
 	dir_entry_write(fill_entry, fd);
