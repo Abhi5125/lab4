@@ -513,6 +513,17 @@ void write_hello_world_file_block(int fd)
 
 	ssize_t bytes_remaining = BLOCK_SIZE;
 
+
+    const char *str = "Hello world\n";
+    ssize_t str_size = strlen(str); // Get the length of the string
+
+    if (write(fd, str, str_size) != str_size) {
+        exit(errno);
+    }
+
+	bytes_remaining -= str_size;
+
+
 	struct ext2_dir_entry current_entry = {0};
 	dir_entry_set(current_entry, HELLO_WORLD_INO, ".");
 	dir_entry_write(current_entry, fd);
