@@ -467,11 +467,11 @@ void write_root_dir_block(int fd)
 
 	bytes_remaining -= child_entry2.rec_len;
 
-	// struct ext2_dir_entry child_entry3 = {0};
-	// dir_entry_set(child_entry3, HELLO_INO, "hello");
-	// dir_entry_write(child_entry3, fd);
+	struct ext2_dir_entry child_entry3 = {0};
+	dir_entry_set(child_entry3, HELLO_INO, "hello");
+	dir_entry_write(child_entry3, fd);
 
-	// bytes_remaining -= child_entry3.rec_len;
+	bytes_remaining -= child_entry3.rec_len;
 
 	if (bytes_remaining > 0) {
  	struct ext2_dir_entry fill_entry = {0};
