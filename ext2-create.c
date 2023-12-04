@@ -428,10 +428,6 @@ struct ext2_inode root_inode = { 0};
 	hello_inode.i_blocks = 0;
 	write_inode(fd, HELLO_INO, &hello_inode);
 
-	
-
-
-
 }
 
 void write_root_dir_block(int fd)
