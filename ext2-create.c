@@ -272,7 +272,7 @@ void write_block_group_descriptor_table(int fd) {
 	block_group_descriptor.bg_inode_table = INODE_TABLE_BLOCKNO;
 	block_group_descriptor.bg_free_blocks_count = NUM_FREE_BLOCKS;
 	block_group_descriptor.bg_free_inodes_count = NUM_FREE_INODES;
-	block_group_descriptor.bg_used_dirs_count = 2;
+	block_group_descriptor.bg_used_dirs_count = 1;
 
 	ssize_t size = sizeof(block_group_descriptor);
 	if (write(fd, &block_group_descriptor, size) != size) {
@@ -422,7 +422,7 @@ void write_inode_table(int fd) {
 	root_inode.i_ctime = current_time;
 	root_inode.i_mtime = current_time;
 	root_inode.i_dtime = 0;
-	root_inode.i_links_count = 1;
+	root_inode.i_links_count = 3;
 	root_inode.i_blocks = 2;
 	root_inode.i_block[0] = ROOT_DIR_BLOCKNO;
 	write_inode(fd, EXT2_ROOT_INO, &root_inode);
