@@ -272,7 +272,7 @@ void write_block_group_descriptor_table(int fd) {
 	block_group_descriptor.bg_inode_table = INODE_TABLE_BLOCKNO;
 	block_group_descriptor.bg_free_blocks_count = NUM_FREE_BLOCKS;
 	block_group_descriptor.bg_free_inodes_count = NUM_FREE_INODES;
-	block_group_descriptor.bg_used_dirs_count = 1;
+	block_group_descriptor.bg_used_dirs_count = 2;
 
 	ssize_t size = sizeof(block_group_descriptor);
 	if (write(fd, &block_group_descriptor, size) != size) {
@@ -385,6 +385,21 @@ void write_inode_table(int fd) {
 
 	// TODO It's all yours
 	// TODO finish the inode entries for the other files
+
+struct ext2_inode root_inode = { 0};
+	root_inode.i_mode =EXT2_S_IFDIR | EXT2_S_IWUSR | EXT2_S_IXUSR | EXT2_S_IRUSR | EXT2_S_IRGRP | EXT2_S_IXGRP | EXT2_S_IROTH | EXT2_S_IXOTH ;
+	root_inode.i_uid = 0;
+	root_inode.i_gid = 0;
+	root_inode.i_size = 1024;
+	root_inode.i_atime = current_time;
+	root_inode.i_ctime = current_time;
+	root_inode.i_mtime = current_time;
+	root_inode.i_dtime = 0;
+	root_inode.i_links_count = 3;
+	root_inode.i_blocks = 2;
+	root_inode.i_block[0] = ROOT_DIR_BLOCKNO;
+	write_inode(fd, EXT2_ROOT_INO, &root_inode);
+
 	struct ext2_inode hello_world_inode = {0};
 	hello_world_inode.i_mode = EXT2_S_IFREG | EXT2_S_IRUSR | EXT2_S_IWUSR | EXT2_S_IRGRP | EXT2_S_IROTH;
 	hello_world_inode.i_uid = 1000;
@@ -413,19 +428,7 @@ void write_inode_table(int fd) {
 	hello_inode.i_blocks = 0;
 	write_inode(fd, HELLO_INO, &hello_inode);
 
-	struct ext2_inode root_inode = { 0};
-	root_inode.i_mode =EXT2_S_IFDIR | EXT2_S_IWUSR | EXT2_S_IXUSR | EXT2_S_IRUSR | EXT2_S_IRGRP | EXT2_S_IXGRP | EXT2_S_IROTH | EXT2_S_IXOTH ;
-	root_inode.i_uid = 0;
-	root_inode.i_gid = 0;
-	root_inode.i_size = 1024;
-	root_inode.i_atime = current_time;
-	root_inode.i_ctime = current_time;
-	root_inode.i_mtime = current_time;
-	root_inode.i_dtime = 0;
-	root_inode.i_links_count = 3;
-	root_inode.i_blocks = 2;
-	root_inode.i_block[0] = ROOT_DIR_BLOCKNO;
-	write_inode(fd, EXT2_ROOT_INO, &root_inode);
+	
 
 
 
@@ -464,11 +467,11 @@ void write_root_dir_block(int fd)
 
 	bytes_remaining -= child_entry2.rec_len;
 
-	struct ext2_dir_entry child_entry3 = {0};
-	dir_entry_set(child_entry3, HELLO_INO, "hello");
-	dir_entry_write(child_entry3, fd);
+	// struct ext2_dir_entry child_entry3 = {0};
+	// dir_entry_set(child_entry3, HELLO_INO, "hello");
+	// dir_entry_write(child_entry3, fd);
 
-	bytes_remaining -= child_entry3.rec_len;
+	// bytes_remaining -= child_entry3.rec_len;
 
 	if (bytes_remaining > 0) {
  	struct ext2_dir_entry fill_entry = {0};
