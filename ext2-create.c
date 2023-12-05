@@ -338,7 +338,6 @@ void write_inode_bitmap(int fd)
 	}
 
 
-
 	if (write(fd, map_value, BLOCK_SIZE) != BLOCK_SIZE)
 	{
 		errno_exit("write");
